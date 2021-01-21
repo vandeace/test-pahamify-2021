@@ -21,7 +21,7 @@ exports.protected = async (req, res, next) => {
       const user = await User.findOne({ where: { id: data.id } });
       if (!user) {
         //if user not found send error message
-        res.status(403).send({ message: "Forbidden Request" });
+        res.status(400).send({ message: "Invalid access token" });
       } else {
         //if user available send user id and token
         req.user = user;

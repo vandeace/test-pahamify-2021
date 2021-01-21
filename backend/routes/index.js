@@ -1,20 +1,28 @@
 const express = require("express");
 const router = express.Router();
-const { index: manga } = require("../controllers/manga");
+const { index: searchManga } = require("../controllers/manga");
 const { login, register } = require("../controllers/auth");
-const { show } = require("../controllers/collection");
+const {
+  index: showCollections,
+  create: AddManga,
+  update: updateManga,
+  destroy: deleteManga,
+  show: getMangaById,
+} = require("../controllers/collection");
 const { json, urlencoded } = require("express");
-const Kitsu = require("kitsu");
-const api = new Kitsu();
 
 //========MIDDLEWARE=======================
 const { protected } = require("../middleware/auth");
 
 //========get manga from api=======================
-router.get("/manga", manga);
+router.get("/manga", searchManga);
 
 //========USER MANGA=======================
-router.get("/collections", protected, show);
+router.get("/mangas", protected, showCollections);
+router.post("/mangas", protected, AddManga);
+router.get("/mangas/:id", protected, getMangaById);
+router.patch("/mangas/:id", protected, updateManga);
+router.delete("/mangas/:id", protected, deleteManga);
 
 //========HOUSE ACTION=======================
 router.post("/login", login);
